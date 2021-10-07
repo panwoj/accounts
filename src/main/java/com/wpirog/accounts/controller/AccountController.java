@@ -16,7 +16,7 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RestController
-@RequestMapping("/v1")
+@RequestMapping("/v1/accounts")
 @RefreshScope
 public class AccountController {
     @Autowired
@@ -28,8 +28,8 @@ public class AccountController {
     @Value("${application.allow-get-accounts}")
     private boolean allowGetAccounts;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/accounts")
-    public AccountDto getAccounts(@RequestParam Long customerId) throws AccountNotFoundException {
+    @GetMapping
+    public AccountDto getAccount(@RequestParam Long customerId) throws AccountNotFoundException {
         if(allowGetAccounts) {
             return mapper.mapToAccountDto(dbService.getAccount(customerId).orElseThrow(() -> new AccountNotFoundException("Please provide correct taskId value")));
         } else {
@@ -38,8 +38,8 @@ public class AccountController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/accounts", consumes = APPLICATION_JSON_VALUE)
-    public void getAccounts(@RequestBody AccountDto accountDto) {
+    @PostMapping(consumes = APPLICATION_JSON_VALUE)
+    public void addAccount(@RequestBody AccountDto accountDto) {
         dbService.saveAccount(mapper.mapToAccount(accountDto));
     }
 }
