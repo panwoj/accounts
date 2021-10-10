@@ -22,3 +22,5 @@ info:
     profile: ${spring.profiles.active}
   serverInfo:
     port: ${server.port}
+server:
+  port: 9998
